@@ -89,9 +89,9 @@ public class Programming implements Serializable {
 		try {
 
 			FileInputStream inputStream = new FileInputStream(new File(xlsFilePath));
-			main.log("reading " + xlsFilePath);
+			Captain.log("reading " + xlsFilePath);
 			Workbook workbook = getRelevantWorkbook(inputStream, xlsFilePath);
-			Sheet sheet = workbook.getSheetAt(main.getCHOSEN_SHEET());
+			Sheet sheet = workbook.getSheetAt(Captain.getCHOSEN_SHEET());
 			Iterator<Row> iterator = sheet.iterator();
 			Iterator<Cell> cellIterator = null;
 			Iterator<Cell> cellIterator2 = null;
@@ -110,23 +110,23 @@ public class Programming implements Serializable {
 					String[] header = cell1.getStringCellValue().split(" ");
 					if (state == BEGIN) {
 						Title = toTitle(header);
-						main.log("Reading Programming for :");
-						main.log(Title);
-						main.log("");
-						main.log(printState());
+						Captain.log("Reading Programming for :");
+						Captain.log(Title);
+						Captain.log("");
+						Captain.log(printState());
 					}
 					date = header[header.length - 1];
-					main.log("Read date: " + date + " at " + cell1.getAddress() + " " + printState());
+					Captain.log("Read date: " + date + " at " + cell1.getAddress() + " " + printState());
 					state = HALL_NUM;
-					main.log("Change State - HALL_NUM");
+					Captain.log("Change State - HALL_NUM");
 					row1 = iterator.next();// skip "Ulam"
 					break;
 				case HALL_NUM:
 					cell1 = cellIterator.next();
 					hall = cell1.getStringCellValue();
-					main.log("Read hall num: " + hall + " at " + cell1.getAddress() + " " + printState());
+					Captain.log("Read hall num: " + hall + " at " + cell1.getAddress() + " " + printState());
 					state = READ_MOVIES;
-					main.log("Change State - READ_MOVIES");
+					Captain.log("Change State - READ_MOVIES");
 				case READ_MOVIES:
 					cell1 = cellIterator.next();// hour viewer
 					row2 = iterator.next();
@@ -136,16 +136,16 @@ public class Programming implements Serializable {
 					while (cellIterator2.hasNext()) {
 						String value = cell2.getStringCellValue();
 						if (!value.equals("")) {
-							main.log("\nRead movie\t" + value + "\t hall: " + hall + "\t"+ cell2.getAddress() + "\t" + printState());
+							Captain.log("\nRead movie\t" + value + "\t hall: " + hall + "\t"+ cell2.getAddress() + "\t" + printState());
 							name = value;
 							start_time = cell1.getStringCellValue();
-							main.log("Read time\t" + start_time + "\t\t\t\t" + cell1.getAddress() + "\t" + printState());
+							Captain.log("Read time\t" + start_time + "\t\t\t\t" + cell1.getAddress() + "\t" + printState());
 							cell1 = cellIterator.next();
 							break_time = cell1.getStringCellValue();
-							main.log("Read time\t" + break_time + "\t\t\t\t" + cell1.getAddress() + "\t" + printState());
+							Captain.log("Read time\t" + break_time + "\t\t\t\t" + cell1.getAddress() + "\t" + printState());
 							cell1 = cellIterator.next();
 							end_time = cell1.getStringCellValue();
-							main.log("Read time\t" + end_time + "\t\t\t\t" + cell1.getAddress() + "\t" + printState());
+							Captain.log("Read time\t" + end_time + "\t\t\t\t" + cell1.getAddress() + "\t" + printState());
 							if (cellIterator.hasNext())
 								cell1 = cellIterator.next();
 
@@ -160,48 +160,48 @@ public class Programming implements Serializable {
 							addProjection(Integer.parseInt(hall), p);
 						} else {
 							
-							main.log("Skipping at\t" + cell2.getAddress());
+							Captain.log("Skipping at\t" + cell2.getAddress());
 							if(cellIterator.hasNext())
 								cell1 = cellIterator.next();
 							if (!cell1.getStringCellValue().equals(""))
-								main.log("MISSED AT " + cell1.getAddress() + " \t" + printState() + " VALUE :\t"
+								Captain.log("MISSED AT " + cell1.getAddress() + " \t" + printState() + " VALUE :\t"
 										+ cell1.getStringCellValue());
 							if(cellIterator.hasNext())
 								cell1 = cellIterator.next();
 							if (!cell1.getStringCellValue().equals(""))
-								main.log("MISSED AT " + cell1.getAddress() + "\t" + printState() + " VALUE :\t"
+								Captain.log("MISSED AT " + cell1.getAddress() + "\t" + printState() + " VALUE :\t"
 										+ cell1.getStringCellValue());
 							if(cellIterator.hasNext())
 								cell1 = cellIterator.next();
 							if (!cell1.getStringCellValue().equals(""))
-								main.log("MISSED AT " + cell1.getAddress() + " " + printState() + " VALUE :\t"
+								Captain.log("MISSED AT " + cell1.getAddress() + " " + printState() + " VALUE :\t"
 										+ cell1.getStringCellValue());
 
 							if (cellIterator2.hasNext())
 								cell2 = cellIterator2.next();
 							if (!cell2.getStringCellValue().equals(""))
-								main.log("MISSED AT " + cell2.getAddress() + " " + printState() + "VALUE :\t"
+								Captain.log("MISSED AT " + cell2.getAddress() + " " + printState() + "VALUE :\t"
 										+ cell2.getStringCellValue());
 							if (cellIterator2.hasNext())
 								cell2 = cellIterator2.next();
 							if (!cell2.getStringCellValue().equals(""))
-								main.log("MISSED AT " + cell2.getAddress() + " " + printState() + "VALUE :\t"
+								Captain.log("MISSED AT " + cell2.getAddress() + " " + printState() + "VALUE :\t"
 										+ cell2.getStringCellValue());
 							if (cellIterator2.hasNext())
 								cell2 = cellIterator2.next();
 							if (!cell2.getStringCellValue().equals(""))
-								main.log("MISSED AT " + cell2.getAddress() + " " + printState() + "VALUE :\t"
+								Captain.log("MISSED AT " + cell2.getAddress() + " " + printState() + "VALUE :\t"
 										+ cell2.getStringCellValue());
 							
 						}
 
 					}
-					if (Integer.parseInt(hall) == main.getMAX_HALL()) {
+					if (Integer.parseInt(hall) == Captain.getMAX_HALL()) {
 						state = READ_DATE;
-						main.log("Change State - READ_DATE");
+						Captain.log("Change State - READ_DATE");
 					} else {
 						state = HALL_NUM;
-						main.log("Change State - HALL_NUM");
+						Captain.log("Change State - HALL_NUM");
 
 					}
 				}
@@ -243,7 +243,7 @@ public class Programming implements Serializable {
 			projections.put(hall_num, new HashSet<Projection>());
 		}
 		projections.get(hall_num).add(p);
-		if (p.getType().equals(main.MOVIE))
+		if (p.getType().equals(Captain.MOVIE))
 			movie_titles.add(p.getName());
 	}
 
@@ -265,7 +265,7 @@ public class Programming implements Serializable {
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
 		System.out.println(Title);
-		for (int i = 1; i <= main.getMAX_HALL(); i++) {
+		for (int i = 1; i <= Captain.getMAX_HALL(); i++) {
 			if (projections.containsKey(i)) {
 
 				b.append("\nHALL " + i + "\n" + projections.get(i));
@@ -292,7 +292,7 @@ public class Programming implements Serializable {
 			PrintStream ps = new PrintStream(f);
 			writeToFile(ps);
 		} catch (IOException e) {
-			main.log(e.toString());
+			Captain.log(e.toString());
 		} finally {
 
 		}
@@ -301,7 +301,7 @@ public class Programming implements Serializable {
 
 	private void writeToFile(OutputStream output) {
 
-		for (int i = 0; i < main.getMAX_HALL(); i++) {
+		for (int i = 0; i < Captain.getMAX_HALL(); i++) {
 			if (projections.containsKey(i)) {
 				((PrintStream) output).println(i);
 			}

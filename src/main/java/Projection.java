@@ -48,7 +48,7 @@ public class Projection implements Serializable {
 			this.time_hour = Integer.parseInt(s);
 			setTime_hour_string(time_hour);
 		} catch (Exception e) {
-			main.log(e.toString());
+			Captain.log(e.toString());
 		}
 
 	}
@@ -117,16 +117,16 @@ public class Projection implements Serializable {
 		try {
 			if (!time_break.equals("")) // movie
 			{
-				type = main.MOVIE;
+				type = Captain.MOVIE;
 				time_break = time_break.replace("(", "").replace(")", "");
 				time_break_string = time_break;
 				this.time_break = Integer.parseInt(time_break.replace(":", ""));
 			} else {
-				type = main.EVENT;
-				time_break_string = main.NO_BREAK;
+				type = Captain.EVENT;
+				time_break_string = Captain.NO_BREAK;
 			}
 		} catch (Exception e) {
-			main.log(e.toString());
+			Captain.log(e.toString());
 
 		}
 	}

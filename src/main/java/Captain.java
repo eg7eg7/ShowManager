@@ -7,8 +7,15 @@ import java.util.Scanner;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Stage; 
 
-public class main {
+public class Captain extends Application {
 
 	private static int CHOSEN_SHEET = 8;
 	private static int KSO_MAX_HALL = 18;
@@ -21,11 +28,32 @@ public class main {
 	public static File f = new File(log_name);
 	public static BufferedWriter bw = null;
 	public static FileWriter fw = null;
-	public static Database db = new Database();
+	public static Database db;
+	
+	
 	public static void main(String[] args) {
+		db = new Database();
 		setLog();
+		
+		launch(args);
 		DummyAdd();
 		closeLog();
+	}
+
+	private static void openGui(Stage stage) {
+		
+
+        StackPane root = new StackPane();
+
+        Scene scene = new Scene(root, 300, 250);
+        
+        Label lbl = new Label("Simple JavaFX application.");
+        lbl.setFont(Font.font("Serif", FontWeight.NORMAL, 20));
+        root.getChildren().add(lbl);
+
+        stage.setTitle("Simple application");
+        stage.setScene(scene);
+        stage.show();
 	}
 
 	private static void DummyAdd() {
@@ -108,6 +136,12 @@ public class main {
 
 	public static void setMAX_HALL(int mAX_HALL) {
 		KSO_MAX_HALL = mAX_HALL;
+	}
+
+	@Override
+	public void start(Stage a) throws Exception {
+		
+		openGui(a);
 	}
 
 }
