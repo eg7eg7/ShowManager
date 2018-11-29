@@ -38,12 +38,11 @@ public class Database {
 		return programmingList.toString();
 	}
 
-	public void showExpiredMovies(int i) {
+	public String showExpiredMovies(int i) {
 		if(i-2 < 0)
 		{
 
-			System.out.println("There is no programming to compare with.");
-			return;
+			return "There is no programming to compare with.";
 		}
 
 		Set<String> old_movies = programmingList.get(i-2).getMovie_titles();
@@ -63,9 +62,9 @@ public class Database {
 			}
 		}
 		if(!removed_movies.isEmpty())
-			System.out.println(removed_movies);
+			return removed_movies.toString();
 		else
-			System.out.println("No movies to show");
+			return "No movies to show";
 		
 	}
 

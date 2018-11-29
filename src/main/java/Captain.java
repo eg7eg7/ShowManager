@@ -34,21 +34,21 @@ public class Captain extends Application {
 	public static void main(String[] args) {
 		db = new Database();
 		setLog();
-		
-		launch(args);
+
 		DummyAdd();
+		launch(args);
 		closeLog();
 	}
 
 	private static void openGui(Stage stage) {
-		
+		String s = DummyAdd();
 
         StackPane root = new StackPane();
 
         Scene scene = new Scene(root, 300, 250);
         
-        Label lbl = new Label("Simple JavaFX application.");
-        lbl.setFont(Font.font("Serif", FontWeight.NORMAL, 20));
+        Label lbl = new Label(s);
+        lbl.setFont(Font.font("Serif", FontWeight.NORMAL, 5));
         root.getChildren().add(lbl);
 
         stage.setTitle("Simple application");
@@ -56,7 +56,7 @@ public class Captain extends Application {
         stage.show();
 	}
 
-	private static void DummyAdd() {
+	private static String DummyAdd() {
 
 		db.addProgramming(new Programming("01.xls"));
 		db.addProgramming(new Programming("02.xls"));
@@ -69,8 +69,8 @@ public class Captain extends Application {
 		db.showExpiredMovies(3);
 		db.showExpiredMovies(4);
 		db.showExpiredMovies(5);
-		db.showExpiredMovies(6);
-		
+		String s = db.showExpiredMovies(6);
+		return s;
 	}
 
 	private static void closeLog() {
