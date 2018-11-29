@@ -21,23 +21,28 @@ public class main {
 	public static File f = new File(log_name);
 	public static BufferedWriter bw = null;
 	public static FileWriter fw = null;
-
+	public static Database db = new Database();
 	public static void main(String[] args) {
-		
-
 		setLog();
-		Database db = new Database();
+		DummyAdd();
+		closeLog();
+	}
+
+	private static void DummyAdd() {
+
 		db.addProgramming(new Programming("01.xls"));
 		db.addProgramming(new Programming("02.xls"));
 		db.addProgramming(new Programming("03.xls"));
 		db.addProgramming(new Programming("04.xls"));
+		db.addProgramming(new Programming("05.xls"));
+		db.addProgramming(new Programming("06.xls"));
 		db.showExpiredMovies(1);
 		db.showExpiredMovies(2);
 		db.showExpiredMovies(3);
 		db.showExpiredMovies(4);
-		closeLog();
-
-
+		db.showExpiredMovies(5);
+		db.showExpiredMovies(6);
+		
 	}
 
 	private static void closeLog() {
