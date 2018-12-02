@@ -11,19 +11,26 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage; 
 
 public class Captain extends Application {
 	
 	
-	public static final String PROJECT_NAME = "Alice";
+	public static final String PROJECT_NAME = "Super Bakara";
+	final static String dir = System.getProperty("user.dir");
 	private static int CHOSEN_SHEET = 8;
 	private static int KSO_MAX_HALL = 18;
 	private static final boolean showLog = false;
@@ -50,30 +57,30 @@ public class Captain extends Application {
 
 	private static void openGui(Stage stage) {
 
-        StackPane root = new StackPane();
-
-        Scene scene = new Scene(root, 500, 500);
-        
-        DirectoryChooser chooser = new DirectoryChooser();
+        BorderPane borderPane = new BorderPane();
+        StackPane actions = new StackPane();
+        Scene scene = new Scene(borderPane, 500, 500);
+        FileChooser chooser = new FileChooser();
         chooser.setTitle(PROJECT_NAME);
-        File defaultDirectory = new File("C:\\integrationcourseenv\\workspace\\ShowManager\\ShowManager");
+        File defaultDirectory = new File(dir);
         chooser.setInitialDirectory(defaultDirectory);
-        
+        chooser.getExtensionFilters().add(new ExtensionFilter("Globus Format Excel File", "*.xls"));
         
         Button browseBtn = new Button("Browse...");
         browseBtn.setOnAction(new EventHandler<ActionEvent> () {
 
 			@Override
 			public void handle(ActionEvent event) {
-				File selectedDirectory = chooser.showDialog(stage);
-				for(File f:selectedDirectory.listFiles())
-				{
-						db.addProgramming(f);
-				}
+				File selected = chooser.showOpenDialog(stage);
+				if(selected != null)
+					db.addProgramming(selected);
+
 				
 			}
         });
-        root.getChildren().add(browseBtn);
+        actions.getChildren().add(browseBtn);
+        
+        borderPane.setBottom(actions);
         stage.setTitle(PROJECT_NAME);
         stage.setScene(scene);
         stage.setOnCloseRequest(new EventHandler() {
