@@ -73,13 +73,18 @@ public class Programming implements Serializable {
 		return serialVersionUID;
 	}
 
-	public Programming(String xlsFilePath) {
+	public Programming(String xlsFilePath) throws Exception {
 		this();
-		readExcel(xlsFilePath);
+		readExcel(new File(xlsFilePath));
 
 	}
 
-	private void readExcel(String xlsFilePath) {
+	public Programming(File selectedDirectory) throws Exception {
+		this();
+		readExcel(selectedDirectory);
+	}
+
+	private void readExcel(File xlsFilePath) throws Exception {
 		String date = "";
 		String hall = "";
 		String name;
@@ -88,9 +93,9 @@ public class Programming implements Serializable {
 		String end_time;
 		try {
 
-			FileInputStream inputStream = new FileInputStream(new File(xlsFilePath));
+			FileInputStream inputStream = new FileInputStream(xlsFilePath);
 			Captain.log("reading " + xlsFilePath);
-			Workbook workbook = getRelevantWorkbook(inputStream, xlsFilePath);
+			Workbook workbook = getRelevantWorkbook(inputStream, xlsFilePath.getAbsolutePath());
 			Sheet sheet = workbook.getSheetAt(Captain.getCHOSEN_SHEET());
 			Iterator<Row> iterator = sheet.iterator();
 			Iterator<Cell> cellIterator = null;
@@ -212,8 +217,9 @@ public class Programming implements Serializable {
 			inputStream.close();
 		} catch (Exception e) {
 			System.out.println(e);
+			throw new Exception("Cannot read excel format");
 		}
-
+		
 	}
 
 	private String printState() {

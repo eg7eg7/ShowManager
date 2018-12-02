@@ -8,19 +8,27 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage; 
 
 public class Captain extends Application {
-
+	
+	
+	public static final String PROJECT_NAME = "Alice";
 	private static int CHOSEN_SHEET = 8;
 	private static int KSO_MAX_HALL = 18;
 	private static final boolean showLog = false;
 	private static final boolean printLog = true;
+	public final static String globeFile = "Autoglobe.dat";
 	public static final String MOVIE = "Movie";
 	public static final String EVENT = "Event";
 	public static final String NO_BREAK = "No intermission";
@@ -34,36 +42,71 @@ public class Captain extends Application {
 	public static void main(String[] args) {
 		db = new Database();
 		setLog();
-
-		DummyAdd();
+		System.out.println(db.getProgrammingList().size());
+		//DummyAdd();
 		launch(args);
 		closeLog();
 	}
 
 	private static void openGui(Stage stage) {
-		String s = DummyAdd();
 
         StackPane root = new StackPane();
 
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 500, 500);
         
-        Label lbl = new Label(s);
-        lbl.setFont(Font.font("Serif", FontWeight.NORMAL, 5));
-        root.getChildren().add(lbl);
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle(PROJECT_NAME);
+        File defaultDirectory = new File("C:\\integrationcourseenv\\workspace\\ShowManager\\ShowManager");
+        chooser.setInitialDirectory(defaultDirectory);
+        
+        
+        Button browseBtn = new Button("Browse...");
+        browseBtn.setOnAction(new EventHandler<ActionEvent> () {
 
-        stage.setTitle("Simple application");
+			@Override
+			public void handle(ActionEvent event) {
+				File selectedDirectory = chooser.showDialog(stage);
+				for(File f:selectedDirectory.listFiles())
+				{
+						db.addProgramming(f);
+				}
+				
+			}
+        });
+        root.getChildren().add(browseBtn);
+        stage.setTitle(PROJECT_NAME);
         stage.setScene(scene);
+        stage.setOnCloseRequest(new EventHandler() {
+
+			@Override
+			public void handle(Event event) {
+				//TODO save data
+				try {
+					db.saveData();
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}
+			}
+        	
+        });
         stage.show();
 	}
 
 	private static String DummyAdd() {
 
-		db.addProgramming(new Programming("01.xls"));
-		db.addProgramming(new Programming("02.xls"));
-		db.addProgramming(new Programming("03.xls"));
-		db.addProgramming(new Programming("04.xls"));
-		db.addProgramming(new Programming("05.xls"));
-		db.addProgramming(new Programming("06.xls"));
+
+		try {
+			db.addProgramming(new Programming("01.xls"));
+			db.addProgramming(new Programming("02.xls"));
+			db.addProgramming(new Programming("03.xls"));
+			db.addProgramming(new Programming("04.xls"));
+			db.addProgramming(new Programming("05.xls"));
+			db.addProgramming(new Programming("06.xls"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		db.showExpiredMovies(1);
 		db.showExpiredMovies(2);
 		db.showExpiredMovies(3);
